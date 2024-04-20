@@ -52,7 +52,8 @@ hashes = _.slice(hashes,[start=0], [end= 3])
 for(let hash of hashes){
     for(let pw of allClearTextPws()){
         if(bcrypt.compareSync(pw, hash)){
-            console.log( pw, hash)
+            if(pw === '') console.log(`${hash} ''`)
+            else console.log(`${hash}: ${pw}`)
             break
         }
     }
