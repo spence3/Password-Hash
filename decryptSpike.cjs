@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const mcupws = require('./scraping/mcupws.json')
 const fs = require('fs')
 const _ = require('lodash');
-
+const ProgressBar = require('progress-bar-cli')
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321'
 
@@ -44,16 +44,23 @@ function* allClearTextPws(){
     yield* pwsOfLenN(3)
 }
 
-
 //load the hashes
-// const hashes = fs.readFileSync('test.hashes', 'utf8').split(/\r?\n/)
+
 let hashes = fs.readFileSync('hashes.txt', 'utf8').split(/\r?\n/)
-hashes = _.slice(hashes,[start=0], [end= 3])
+let counter = 0
+const hashLength = 50000
+let startTime = new Date()
+
+
+hashes = _.slice(hashes,-50000)
 for(let hash of hashes){
+    ProgressBar.progressBar(counter, hashLength, startTime)
     for(let pw of allClearTextPws()){
         if(bcrypt.compareSync(pw, hash)){
-            if(pw === '') console.log(`${hash} ''`)
-            else console.log(`${hash}: ${pw}`)
+            if(pw === '') fs.appendFileSync('hashes.answers.txt', `${hash} ''\n`)
+            else fs.appendFileSync('hashes.answers.txt', `${hash}: ${pw}\n`)
+            counter ++
+            Date(new Date().getTime() + 100)
             break
         }
     }

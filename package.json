@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "lodash": "^4.17.21"
+    "cli-progress": "^3.12.0",
+    "lodash": "^4.17.21",
+    "progress-bar-cli": "^1.0.4"
   }
 }
