@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const mcupws = require('./scraping/mcupws.json')
 const fs = require('fs')
+const _ = require('lodash');
 
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321'
@@ -45,11 +46,11 @@ function* allClearTextPws(){
 
 
 //load the hashes
-const hashes = fs.readFileSync('test.hashes', 'utf8').split(/\r?\n/)
+// const hashes = fs.readFileSync('test.hashes', 'utf8').split(/\r?\n/)
+let hashes = fs.readFileSync('hashes.txt', 'utf8').split(/\r?\n/)
+hashes = _.slice(hashes,[start=0], [end= 3])
 for(let hash of hashes){
     for(let pw of allClearTextPws()){
-        // console.log(pw)
-        // console.log(bcrypt.compareSync(pw, hclearash))
         if(bcrypt.compareSync(pw, hash)){
             console.log( pw, hash)
             break
